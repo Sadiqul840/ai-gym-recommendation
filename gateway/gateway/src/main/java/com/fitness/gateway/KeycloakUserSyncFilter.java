@@ -109,27 +109,37 @@ public class KeycloakUserSyncFilter implements WebFilter {
 
         String path = exchange.getRequest().getPath().value();
 
-        // ✅ IMPORTANT: sirf API routes ke liye
+        // 1️⃣ Non-API routes → skip
         if (!path.startsWith("/api")) {
             return chain.filter(exchange);
         }
 
+        // 2️⃣ PUBLIC USER APIs → skip JWT completely (VERY IMPORTANT)
+        if (
+            path.equals("/api/users/register") ||
+            (path.startsWith("/api/users/")
+                    && exchange.getRequest().getMethod() != null
+                    && exchange.getRequest().getMethod().name().equals("GET"))
+        ) {
+            return chain.filter(exchange);
+        }
+
+        // 3️⃣ Protected APIs → JWT required
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
         String userId = exchange.getRequest().getHeaders().getFirst("X-User-ID");
 
-        // ✅ Agar token hi nahi hai → skip
+        // No JWT → skip (fail-safe, no 500)
         if (token == null || !token.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
 
         RegisterRequest registerRequest = getUserDetails(token);
 
-        // ✅ Extra safety
+        // Extract userId from JWT if header missing
         if (userId == null && registerRequest != null) {
             userId = registerRequest.getKeycloakId();
         }
 
-        // ✅ Agar ab bhi userId nahi mila → skip
         if (userId == null) {
             return chain.filter(exchange);
         }
