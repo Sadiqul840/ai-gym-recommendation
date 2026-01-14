@@ -1,9 +1,13 @@
-spring:
-  application:
-    name: api-gateway
-  config:
-    import: optional:configserver:http://localhost:8888
+#14-01-2026
+# spring:
+#   application:
+#     name: api-gateway
+#   config:
+#     import: optional:configserver:http://localhost:8888
 
+# server:
+#   port: 8080
+#--------------------------------------------------------------
 
 #spring:
 #  application:
@@ -19,5 +23,22 @@ spring:
 #    hostname: localhost
 #    prefer-ip-address: true
 #
+
+
+spring:
+  application:
+    name: api-gateway
+
+  config:
+    import: optional:configserver:http://localhost:8888
+
 server:
   port: 8080
+
+# 🔴 IMPORTANT: Disable Eureka completely for Render
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
