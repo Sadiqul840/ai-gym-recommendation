@@ -13,6 +13,10 @@ spring:
   application:
     name: user-service
 
+  cloud:
+    config:
+      enabled: false
+
   datasource:
     url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
