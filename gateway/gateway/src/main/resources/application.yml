@@ -32,6 +32,14 @@ spring:
   config:
     import: optional:configserver:http://localhost:8888
 
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: https://ai-gym-userservice.onrender.com
+          predicates:
+            - Path=/api/users/**
+
 server:
   port: 8080
 
@@ -41,4 +49,5 @@ eureka:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
+
 
