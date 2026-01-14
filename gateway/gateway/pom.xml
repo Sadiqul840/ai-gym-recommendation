@@ -6,7 +6,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- ✅ Stable & Production-ready Spring Boot -->
+    <!-- ✅ Spring Boot (stable) -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -18,30 +18,28 @@
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gateway</name>
-    <description>API Gateway for routing requests in fitness microservices architecture</description>
+    <description>API Gateway for Fitness Microservices</description>
 
-    <!-- ✅ IMPORTANT PROPERTIES -->
     <properties>
-        <!-- Java 17 = LTS + Docker + Render compatible -->
+        <!-- ✅ Java LTS -->
         <java.version>17</java.version>
 
-        <!-- Spring Cloud compatible with Spring Boot 3.2.x -->
+        <!-- ✅ Compatible Spring Cloud -->
         <spring-cloud.version>2023.0.1</spring-cloud.version>
     </properties>
 
-    <!-- ✅ DEPENDENCIES -->
     <dependencies>
 
-        <!-- Spring Cloud Config Client -->
+        <!-- Config Client -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
 
-        <!-- Spring Cloud Gateway (Reactive) -->
+        <!-- ✅ CORRECT Gateway Dependency -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
 
         <!-- Eureka Client -->
@@ -82,12 +80,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <!-- ✅ Spring Cloud BOM -->
@@ -103,7 +95,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- ✅ BUILD -->
     <build>
         <plugins>
             <plugin>
