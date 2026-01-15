@@ -17,14 +17,15 @@ public class ActivityController {
     private final ActivityService activityService;
 
     // ✅ CREATE / TRACK ACTIVITY
-    @PostMapping
-    public ResponseEntity<ActivityResponse> trackActivity(
-            @RequestBody ActivityRequest request,
-            @RequestHeader("X-User-ID") String userId
-    ) {
-        request.setUserId(userId);
-        return ResponseEntity.ok(activityService.trackActivity(request));
-    }
+@PostMapping
+public ResponseEntity<ActivityResponse> trackActivity(
+        @RequestBody ActivityRequest request,
+        @RequestHeader("X-User-ID") String userId
+) {
+    request.setUserId(userId);
+    return ResponseEntity.ok(activityService.trackActivity(request));
+}
+
 
     // ✅ GET ALL ACTIVITIES FOR USER
     @GetMapping
