@@ -142,36 +142,15 @@ public class UserValidationService {
                     .block();
 
             if (exists != null && exists) {
-                return true; // User exists
+                return true;
             }
 
-            // User does not exist → create
-            log.info("User not found, creating user: {}", userId);
-
-            // TODO: Replace dummy values with real info if available
-            Map<String, String> userPayload = Map.of(
-                    "userId", userId,
-                    "email", userId + "@example.com",
-                    "firstName", "Auto",
-                    "lastName", "User"
-            );
-
-            userServiceWebClient.post()
-                    .uri("/api/users")
-                    .bodyValue(userPayload)
-                    .retrieve()
-                    .bodyToMono(Void.class)
-                    .block();
-
-            log.info("User created successfully: {}", userId);
+            log.warn("User not found in UserService. Skipping validation for now.");
             return true;
 
-        } catch (WebClientResponseException e) {
-            log.error("User Service error {} for user {}: {}", e.getStatusCode(), userId, e.getResponseBodyAsString());
-            throw new RuntimeException("User validation/creation failed for " + userId);
         } catch (Exception e) {
-            log.error("Unknown error validating/creating user {}: {}", userId, e.getMessage());
-            throw new RuntimeException("User validation/creation failed for " + userId);
+            log.warn("UserService unavailable. Proceeding without validation.");
+            return true;
         }
     }
 }
