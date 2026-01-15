@@ -35,10 +35,18 @@ spring:
   cloud:
     gateway:
       routes:
+
+        # ✅ USER SERVICE
         - id: user-service
           uri: https://ai-gym-userservice.onrender.com
           predicates:
             - Path=/api/users/**
+
+        # ✅ ACTIVITY SERVICE (NEW – ADD THIS)
+        - id: activity-service
+          uri: https://ai-gym-activityservice.onrender.com
+          predicates:
+            - Path=/api/activities/**
 
 server:
   port: 8080
