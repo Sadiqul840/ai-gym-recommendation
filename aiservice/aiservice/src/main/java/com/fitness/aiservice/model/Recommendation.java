@@ -1,4 +1,4 @@
-package com.fitnees.aiservice.model;
+package com.fitness.aiservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

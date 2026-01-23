@@ -1,4 +1,4 @@
-package com.fitnees.aiservice.service;
+package com.fitness.aiservice.service;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
-package com.fitnees.aiservice.controller;
+package com.fitness.aiservice.controller;
 
-import com.fitnees.aiservice.model.Recommendation;
-import com.fitnees.aiservice.service.RecommendationService;
+import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.service.RecommendationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
-package com.fitnees.aiservice.service;
+package com.fitness.aiservice.service;
 
-import com.fitnees.aiservice.model.Recommendation;
-import com.fitnees.aiservice.repository.RecommendationRepository;
+import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.RecommendationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

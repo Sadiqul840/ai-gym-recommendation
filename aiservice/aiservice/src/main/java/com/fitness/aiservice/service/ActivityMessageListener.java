@@ -1,11 +1,10 @@
-package com.fitnees.aiservice.service;
+package com.fitness.aiservice.service;
 
-import com.fitnees.aiservice.model.Activity;
-import com.fitnees.aiservice.model.Recommendation;
-import com.fitnees.aiservice.repository.RecommendationRepository;
+import com.fitness.aiservice.model.Activity;
+import com.fitness.aiservice.model.Recommendation;
+import com.fitness.aiservice.repository.RecommendationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

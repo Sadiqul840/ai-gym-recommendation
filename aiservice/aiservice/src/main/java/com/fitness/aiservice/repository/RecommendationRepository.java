@@ -1,6 +1,6 @@
-package com.fitnees.aiservice.repository;
+package com.fitness.aiservice.repository;
 
-import com.fitnees.aiservice.model.Recommendation;
+import com.fitness.aiservice.model.Recommendation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

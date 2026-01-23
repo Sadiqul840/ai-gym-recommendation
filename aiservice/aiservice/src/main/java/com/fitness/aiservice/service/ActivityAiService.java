@@ -1,15 +1,12 @@
-package com.fitnees.aiservice.service;
+package com.fitness.aiservice.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fitnees.aiservice.model.Activity;
-import com.fitnees.aiservice.model.Recommendation;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fitness.aiservice.model.Activity;
+import com.fitness.aiservice.model.Recommendation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.fitnees.aiservice;
+package com.fitness.aiservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
