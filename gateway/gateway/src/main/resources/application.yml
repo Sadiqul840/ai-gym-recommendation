@@ -29,33 +29,47 @@ spring:
   application:
     name: api-gateway
 
-  config:
-    import: optional:configserver:http://localhost:8888
-
+  # 🔴 Config Server disabled for Render
   cloud:
+    config:
+      enabled: false
+
     gateway:
       routes:
 
-        # ✅ USER SERVICE
+        # =========================
+        # 👤 USER SERVICE
+        # =========================
         - id: user-service
           uri: https://ai-gym-userservice.onrender.com
           predicates:
             - Path=/api/users/**
 
-        # ✅ ACTIVITY SERVICE (NEW – ADD THIS)
+        # =========================
+        # 🏃 ACTIVITY SERVICE
+        # =========================
         - id: activity-service
           uri: https://ai-gym-activityservice.onrender.com
           predicates:
             - Path=/api/activities/**
 
+        # =========================
+        # 🤖 AI SERVICE
+        # =========================
+        - id: ai-service
+          uri: https://ai-gym-aiservice.onrender.com
+          predicates:
+            - Path=/api/recommendations/**
+
 server:
   port: 8080
 
-# 🔴 IMPORTANT: Disable Eureka completely for Render
+# 🔴 Eureka completely OFF (Render compatible)
 eureka:
   client:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
+
 
 
