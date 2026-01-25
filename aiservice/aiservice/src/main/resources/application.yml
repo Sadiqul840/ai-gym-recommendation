@@ -15,8 +15,38 @@
 #server:
 # port: 8083
 
+# spring:
+#  application:
+#   name: ai-service
+#  config:
+#   import: optional:configserver:http://localhost:8888
+
+
+
 spring:
- application:
-  name: ai-service
- config:
-  import: optional:configserver:http://localhost:8888
+  application:
+    name: ai-service
+
+  # ❌ Config server Render pe use nahi karna
+  cloud:
+    config:
+      enabled: false
+
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
+
+server:
+  port: 8080
+
+# 🔴 Kafka OFF (Render does not support Kafka)
+kafka:
+  enabled: false
+  topic:
+    name: activity-events
+
+# 🔑 Gemini AI Config
+gemini:
+  api:
+    key: ${GEMINI_API_KEY}
+    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
