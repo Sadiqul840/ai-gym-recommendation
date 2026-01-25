@@ -27,10 +27,9 @@ spring:
   application:
     name: ai-service
 
-  # ❌ Config server Render pe use nahi karna
   cloud:
     config:
-      enabled: false
+      enabled: false   # ❌ Render pe Config Server nahi
 
   data:
     mongodb:
@@ -39,14 +38,22 @@ spring:
 server:
   port: 8080
 
-# 🔴 Kafka OFF (Render does not support Kafka)
+# ❌ Eureka completely OFF
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+# ❌ Kafka OFF (Render does not support Kafka)
 kafka:
   enabled: false
   topic:
     name: activity-events
 
-# 🔑 Gemini AI Config
+# ✅ Gemini AI Config
 gemini:
   api:
     key: ${GEMINI_API_KEY}
     url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent
+
