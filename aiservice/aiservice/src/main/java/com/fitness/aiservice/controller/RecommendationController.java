@@ -46,6 +46,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// @RestController
+// @RequestMapping("/api/recommendation")
+// @RequiredArgsConstructor
+// public class RecommendationController {
+
+//     private final RecommendationService recommendationService;
+//     private final ActivityAiService activityAiService;
+//     private final RecommendationRepository recommendationRepository;
+
+//     // ✅ GET recommendations by user
+//     @GetMapping("/user/{userId}")
+//     public ResponseEntity<List<Recommendation>> getRecommendations(@PathVariable String userId) {
+//         return ResponseEntity.ok(recommendationService.getUserRecommendation(userId));
+//     }
+
+//     // ✅ GET recommendation by activity
+//     @GetMapping("/activity/{activityId}")
+//     public ResponseEntity<Recommendation> getActivityRecommendation(@PathVariable String activityId) {
+//         return ResponseEntity.ok(recommendationService.getActivityRecommendation(activityId));
+//     }
+
+//     // ✅ NEW: GENERATE recommendation using Gemini (NO KAFKA)
+//     @PostMapping("/generate")
+//     public ResponseEntity<Recommendation> generateRecommendation(
+//             @RequestBody Activity activity
+//     ) {
+//         Recommendation recommendation =
+//                 activityAiService.generateRecommendation(activity);
+
+//         return ResponseEntity.ok(
+//                 recommendationRepository.save(recommendation)
+//         );
+//     }
+// }
+
+
 @RestController
 @RequestMapping("/api/recommendation")
 @RequiredArgsConstructor
@@ -55,28 +91,19 @@ public class RecommendationController {
     private final ActivityAiService activityAiService;
     private final RecommendationRepository recommendationRepository;
 
-    // ✅ GET recommendations by user
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Recommendation>> getRecommendations(@PathVariable String userId) {
         return ResponseEntity.ok(recommendationService.getUserRecommendation(userId));
     }
 
-    // ✅ GET recommendation by activity
     @GetMapping("/activity/{activityId}")
     public ResponseEntity<Recommendation> getActivityRecommendation(@PathVariable String activityId) {
         return ResponseEntity.ok(recommendationService.getActivityRecommendation(activityId));
     }
 
-    // ✅ NEW: GENERATE recommendation using Gemini (NO KAFKA)
     @PostMapping("/generate")
-    public ResponseEntity<Recommendation> generateRecommendation(
-            @RequestBody Activity activity
-    ) {
-        Recommendation recommendation =
-                activityAiService.generateRecommendation(activity);
-
-        return ResponseEntity.ok(
-                recommendationRepository.save(recommendation)
-        );
+    public ResponseEntity<Recommendation> generateRecommendation(@RequestBody Activity activity) {
+        Recommendation recommendation = activityAiService.generateRecommendation(activity);
+        return ResponseEntity.ok(recommendationRepository.save(recommendation));
     }
 }
