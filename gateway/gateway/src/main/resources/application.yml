@@ -25,51 +25,67 @@
 #
 
 
+
+
 spring:
   application:
     name: api-gateway
 
-  # 🔴 Config Server disabled for Render
   cloud:
     config:
       enabled: false
 
     gateway:
+
+      # 🌍 CORS CONFIG (FRONTEND → GATEWAY)
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:5173"
+              - "https://ai-gym-frontend.onrender.com"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            exposedHeaders:
+              - Authorization
+            allowCredentials: true
+
+      # 🚦 ROUTES
       routes:
 
-        # =========================
         # 👤 USER SERVICE
-        # =========================
         - id: user-service
           uri: https://ai-gym-userservice.onrender.com
           predicates:
             - Path=/api/users/**
 
-        # =========================
         # 🏃 ACTIVITY SERVICE
-        # =========================
         - id: activity-service
           uri: https://ai-gym-activityservice.onrender.com
           predicates:
             - Path=/api/activities/**
 
-        # =========================
         # 🤖 AI SERVICE
-        # =========================
         - id: ai-service
           uri: https://ai-gym-aiservice.onrender.com
           predicates:
-            - Path=/api/recommendations/**
+            - Path=/api/recommendation/**
 
 server:
   port: 8080
 
-# 🔴 Eureka completely OFF (Render compatible)
 eureka:
   client:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
+
 
 
 
