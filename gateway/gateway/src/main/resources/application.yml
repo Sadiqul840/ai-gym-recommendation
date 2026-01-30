@@ -36,15 +36,13 @@ spring:
       enabled: false
 
     gateway:
-
-      # 🌍 GLOBAL CORS (VERY IMPORTANT)
       globalcors:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
             allowedOriginPatterns:
-              - http://localhost:5173
-              - https://ai-gym-frontend.onrender.com
+              - "http://localhost:5173"
+              - "https://ai-gym-frontend.onrender.com"
             allowedMethods:
               - GET
               - POST
@@ -57,32 +55,21 @@ spring:
               - Authorization
             allowCredentials: true
 
-      # 🚦 ROUTES
       routes:
-
-        # 👤 USER SERVICE
         - id: user-service
           uri: https://ai-gym-userservice.onrender.com
           predicates:
             - Path=/api/users/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
-        # 🏃 ACTIVITY SERVICE
         - id: activity-service
           uri: https://ai-gym-activityservice.onrender.com
           predicates:
             - Path=/api/activities/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
-        # 🤖 AI SERVICE ✅ (FIXED PATH)
         - id: ai-service
           uri: https://ai-gym-aiservice.onrender.com
           predicates:
             - Path=/api/recommendations/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
 server:
   port: 8080
@@ -90,5 +77,3 @@ server:
 eureka:
   client:
     enabled: false
-    register-with-eureka: false
-    fetch-registry: false
