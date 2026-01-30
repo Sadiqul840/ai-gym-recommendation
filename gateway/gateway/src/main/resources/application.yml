@@ -37,8 +37,9 @@ spring:
 
     gateway:
 
-      # 🌍 CORS CONFIG (FRONTEND → GATEWAY)
+      # 🌍 GLOBAL CORS (VERY IMPORTANT)
       globalcors:
+        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
             allowedOriginPatterns:
@@ -64,18 +65,24 @@ spring:
           uri: https://ai-gym-userservice.onrender.com
           predicates:
             - Path=/api/users/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
         # 🏃 ACTIVITY SERVICE
         - id: activity-service
           uri: https://ai-gym-activityservice.onrender.com
           predicates:
             - Path=/api/activities/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
-        # 🤖 AI SERVICE
+        # 🤖 AI SERVICE ✅ (FIXED PATH)
         - id: ai-service
           uri: https://ai-gym-aiservice.onrender.com
           predicates:
-            - Path=/api/recommendation/**
+            - Path=/api/recommendations/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
 
 server:
   port: 8080
