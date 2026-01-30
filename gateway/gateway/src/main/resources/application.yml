@@ -41,9 +41,9 @@ spring:
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "http://localhost:5173"
-              - "https://ai-gym-frontend.onrender.com"
+            allowedOriginPatterns:
+              - http://localhost:5173
+              - https://ai-gym-frontend.onrender.com
             allowedMethods:
               - GET
               - POST
@@ -85,7 +85,3 @@ eureka:
     enabled: false
     register-with-eureka: false
     fetch-registry: false
-
-
-
-
