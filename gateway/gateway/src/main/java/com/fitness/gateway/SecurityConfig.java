@@ -47,7 +47,6 @@ package com.fitness.gateway;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -63,16 +62,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-
         return http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ⭐ MOST IMPORTANT
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-
-                // ✅ THIS LINE WAS MISSING (MOST IMPORTANT)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
                 .authorizeExchange(exchange -> exchange
-                        // ✅ Preflight requests allow karo
-                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyExchange().permitAll()
                 )
                 .build();
@@ -80,13 +73,11 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration config = new CorsConfiguration();
 
-        // ❗ allowedOriginPatterns use karo (wildcard allowed)
-        config.setAllowedOriginPatterns(List.of(
-                "http://localhost:5173",
-                "https://ai-gym-frontend.onrender.com"
+        config.setAllowedOrigins(List.of(
+                "https://ai-gym-frontend.onrender.com",
+                "http://localhost:5173"
         ));
 
         config.setAllowedMethods(List.of(
@@ -99,7 +90,6 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-
         source.registerCorsConfiguration("/**", config);
         return source;
     }
