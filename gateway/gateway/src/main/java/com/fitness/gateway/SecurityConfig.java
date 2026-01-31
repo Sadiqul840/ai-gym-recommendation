@@ -63,9 +63,11 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ⭐ MOST IMPORTANT
+                // 🔥 THIS LINE IS MANDATORY
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers("OPTIONS", "/**").permitAll() // 🔥 allow preflight
                         .anyExchange().permitAll()
                 )
                 .build();
@@ -76,16 +78,22 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "https://ai-gym-frontend.onrender.com",
-                "http://localhost:5173"
+                "http://localhost:5173",
+                "https://ai-gym-frontend.onrender.com"
         ));
 
         config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
         ));
 
-        config.setAllowedHeaders(List.of("*"));
-        config.setExposedHeaders(List.of("Authorization"));
+        config.setAllowedHeaders(List.of(
+                "*"
+        ));
+
+        config.setExposedHeaders(List.of(
+                "Authorization"
+        ));
+
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
@@ -94,3 +102,4 @@ public class SecurityConfig {
         return source;
     }
 }
+
