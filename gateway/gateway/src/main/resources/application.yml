@@ -36,13 +36,15 @@ spring:
       enabled: false
 
     gateway:
+      # ⭐ REQUIRED for CORS preflight (OPTIONS)
       globalcors:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOriginPatterns:
-              - "http://localhost:5173"
-              - "https://ai-gym-frontend.onrender.com"
+            # ✅ Use allowedOrigins (NOT patterns) with credentials
+            allowedOrigins:
+              - http://localhost:5173
+              - https://ai-gym-frontend.onrender.com
             allowedMethods:
               - GET
               - POST
@@ -56,20 +58,23 @@ spring:
             allowCredentials: true
 
       routes:
+        # 👤 USER SERVICE
         - id: user-service
           uri: https://ai-gym-userservice.onrender.com
           predicates:
-            - Path=/api/users/**
+            - Path=/api/users, /api/users/**
 
+        # 🏃 ACTIVITY SERVICE
         - id: activity-service
           uri: https://ai-gym-activityservice.onrender.com
           predicates:
-            - Path=/api/activities/**
+            - Path=/api/activities, /api/activities/**
 
+        # 🤖 AI SERVICE
         - id: ai-service
           uri: https://ai-gym-aiservice.onrender.com
           predicates:
-            - Path=/api/recommendations/**
+            - Path=/api/recommendations, /api/recommendations/**
 
 server:
   port: 8080
@@ -77,3 +82,5 @@ server:
 eureka:
   client:
     enabled: false
+    register-with-eureka: false
+    fetch-registry: false
