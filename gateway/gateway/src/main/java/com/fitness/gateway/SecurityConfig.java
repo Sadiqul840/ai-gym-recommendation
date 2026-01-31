@@ -63,33 +63,40 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchange -> exchange
-                        .anyExchange().permitAll()   // ✅ OPEN gateway
-                )
-                .build(); // ❌ JWT disabled
+
+        http
+            .cors(cors -> {})              // ✅ CRITICAL LINE
+            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .authorizeExchange(ex -> ex
+                .anyExchange().permitAll() // ✅ Gateway open
+            );
+
+        return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration config = new CorsConfiguration();
+
+        // ✅ NO WILDCARDS HERE
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://*.onrender.com"
+                "https://ai-gym-frontend.onrender.com"
         ));
+
         config.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
         ));
-        config.setAllowedHeaders(Arrays.asList(
-                "Authorization", "Content-Type", "X-User-ID"
-        ));
+
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }
-
