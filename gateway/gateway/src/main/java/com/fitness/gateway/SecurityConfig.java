@@ -47,6 +47,7 @@ package com.fitness.gateway;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -54,7 +55,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -64,14 +64,18 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
-        http
-            .cors(cors -> {})              // ✅ CRITICAL LINE
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
-            .authorizeExchange(ex -> ex
-                .anyExchange().permitAll() // ✅ Gateway open
-            );
+        return http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
 
-        return http.build();
+                // ✅ THIS LINE WAS MISSING (MOST IMPORTANT)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                .authorizeExchange(exchange -> exchange
+                        // ✅ Preflight requests allow karo
+                        .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyExchange().permitAll()
+                )
+                .build();
     }
 
     @Bean
@@ -79,13 +83,13 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ NO WILDCARDS HERE
-        config.setAllowedOrigins(List.of(
+        // ❗ allowedOriginPatterns use karo (wildcard allowed)
+        config.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173",
                 "https://ai-gym-frontend.onrender.com"
         ));
 
-        config.setAllowedMethods(Arrays.asList(
+        config.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "DELETE", "OPTIONS"
         ));
 
@@ -95,8 +99,8 @@ public class SecurityConfig {
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
 
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }
